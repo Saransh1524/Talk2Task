@@ -2,7 +2,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react"; // optional icon
-import { useToast } from "@/hooks/use-toast"
 
 // Type for the summary object
 type Props = {
@@ -16,7 +15,7 @@ type Props = {
 };
 
 export default function SummaryCard({ summary, onDelete }: Props) {
-  const { toast } = useToast();
+  
 
   const deleteFunction = () => {
     if (confirm("Are you sure you want to delete this summary?")) {

@@ -7,42 +7,60 @@ import axios from "@/lib/axios";
 import { Textarea } from "@/components/ui/textarea"; // Importing Textarea component from shadcn/ui
 import { Button } from "@/components/ui/button"; // shandCn ui component
 import ResultCard from "@/components/ResultCard"; 
-import { useRef } from "react";
+// import { useRef } from "react";
 export default function Home() {
-   const fileInputRef = useRef<HTMLInputElement>(null);// reference to the file input element
+  //  const fileInputRef = useRef<HTMLInputElement>(null);// reference to the file input element
   const [transcript, setTranscript] = useState(""); // store the transcript text
   const [loading1, setLoading1] = useState(false); // changes button to summarizing if true and summarize if false 
   const [loading2, setLoading2] = useState(false); 
   const [result, setResult] = useState(""); // result of the summarization stored here 
-  const [message, setMessage] = useState("");
   const { toast } = useToast();
 
-  const handleSummarize = async () => {
-    setLoading1(true);
-    try {
-      const res = await axios.post("/summarize", { transcript }); // post req to /sumarize endpoint with transcript as body
-      // res.data.result contains the summarized text
-      setResult(res.data.result);
-    } catch (err) {
-      alert("Failed to summarize");
+const handleSummarize = async () => {
+   if (!transcript.trim()) {
+    toast({
+      title: "❌ Error",
+      description: "Please enter or upload a transcript first",
+      variant: "destructive",
+    });
+    return;
+  }
+  setLoading1(true);
+  try {
+    const res = await axios.post("/summarize", { transcript });
+    setResult(res.data.result);
+    toast({
+      title: "✅ Success",
+      description: "Transcript summarized successfully!",
+    });
+  } catch (err) {
+    console.error("Summarization failed:", err);
+    toast({
+      title: "❌ Error",
+      description: "Failed to summarize transcript",
+      variant: "destructive",
+    });
+  } finally {
     setLoading1(false);
-  }finally {
-      setLoading1(false);
-    }
-    }
-
+  }
+};
 
   const handleSave = async () => {
     const token = localStorage.getItem("token");
 
     if (!transcript || !result) {
-      setMessage("Transcript or summary is missing.");
-      return;
+     toast({
+      title: "❌ Error",
+      description: "Transcript or summary is missing.",
+      variant: "destructive",
+    });
+    return;
     }
 
     try {
+
       setLoading2(true);
-      setMessage("");
+     
 
       await axios.post("/summaries", {
         transcript: transcript,
@@ -128,7 +146,7 @@ const { getRootProps, getInputProps, isDragActive } = useDropzone({
     'text/plain': [],
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document': []
   },
-  onDropRejected: (fileRejections) => {
+  onDropRejected: () => {
     toast({
       title: "❌ File size too large",
       description: `Please upload files under 2MB.`,
