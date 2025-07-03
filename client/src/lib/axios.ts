@@ -2,7 +2,7 @@ import axios from "axios";
 
 // confgure base url 
 const instance = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: "https://talk2task-backend.onrender.com/api",
 });
 
 // allows to add auth togen from local storage to request headers in the form of Bearer token, saves manual work of doing so

@@ -7,8 +7,7 @@ const app = express();
 app.use(cors({
   origin: [
     'http://localhost:5173',  // Vite dev server
-    'https://talk2-task.vercel.app/', // Production URL
-    'https://talk2task.vercel.app' // Production URL without trailing slash
+    'https://talk2-taskfrontend.vercel.app/', // Production URL
   ],
   credentials: true, // Allow cookies/auth headers
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
