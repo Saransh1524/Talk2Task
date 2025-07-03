@@ -15,6 +15,10 @@ app.use(cors({
 }));
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.send("Talk2Task API is running 🚀");
+});
+
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/summarize', require('./routes/summarize'));
 app.use("/api/summaries", require("./routes/summaries"));
