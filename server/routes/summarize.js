@@ -68,6 +68,7 @@ ${transcript}
     const text = result.response.text();
 
     res.json({ result: text });
+    console.log(text);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Gemini API failed' });
