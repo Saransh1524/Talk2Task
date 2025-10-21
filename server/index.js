@@ -4,29 +4,16 @@ const dotenv = require('dotenv');
 dotenv.config();
 const app = express();
 
-const allowedOrigins = [
-  'http://localhost:5173',                  // dev
-  'https://talk2-taskfrontend.vercel.app', // prod
-];
-
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true); // allow Postman, mobile apps
-    if (allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-};
-
-
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
-
+app.use(cors({
+  origin: [
+    'http://localhost:5173',  // Vite dev server
+    'https://talk2-taskfrontend.vercel.app', // Production URL
+  ],
+  credentials: true, // Allow cookies/auth headers
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("Talk2Task API is running 🚀");

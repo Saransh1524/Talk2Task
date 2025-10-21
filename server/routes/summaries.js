@@ -5,12 +5,13 @@ const auth = require("../middlewares/auth");
 
 const prisma = new PrismaClient();
 
+// POST /api/summaries - Save a new summary
 router.post("/", auth, async (req, res) => {
   const { transcript, result } = req.body;
   const email = req.user.email;
 
   try {
-    // 🔍 Find user by email to get their ID
+    //  Find user by email to get their ID
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) return res.status(401).json({ error: "User not found" });
 
@@ -19,7 +20,7 @@ router.post("/", auth, async (req, res) => {
         email,
         transcript,
         result,
-        userId: user.id, // ✅ store FK
+        userId: user.id, //  store FK
       },
     });
 
@@ -30,6 +31,7 @@ router.post("/", auth, async (req, res) => {
   }
 });
 
+// GET /api/summaries - Fetch all user summaries
 router.get("/", auth, async (req, res) => {
   const email = req.user.email;
 
@@ -49,6 +51,7 @@ router.get("/", auth, async (req, res) => {
     res.status(500).json({ error: "Failed to fetch summaries" });
   }
 });
+
 
 router.delete('/:id', auth , async (req, res) => {
   const { id } = req.params;
