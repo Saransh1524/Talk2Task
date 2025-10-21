@@ -5,13 +5,18 @@ dotenv.config();
 const app = express();
 app.use(cors({
   origin: [
-    // 'http://localhost:5173',  // Vite dev server
+    'http://localhost:5173',  // Vite dev server
     'https://talk2-taskfrontend.vercel.app', // Production URL
   ],
   credentials: true, // Allow cookies/auth headers
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+app.use(cors(corsOptions));
+
+// Handle OPTIONS preflight globally
+app.options('*', cors(corsOptions));
 app.use(express.json());
 
 app.get("/", (req, res) => {
