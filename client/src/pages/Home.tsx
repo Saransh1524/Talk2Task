@@ -47,7 +47,6 @@ const handleSummarize = async () => {
 
   const handleSave = async () => {
     const token = localStorage.getItem("token");
-
     if (!transcript || !result) {
      toast({
       title: "❌ Error",

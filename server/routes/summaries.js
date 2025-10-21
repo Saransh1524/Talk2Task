@@ -8,13 +8,16 @@ const prisma = new PrismaClient();
 // POST /api/summaries - Save a new summary
 router.post("/", auth, async (req, res) => {
   const { transcript, result } = req.body;
+
   const email = req.user.email;
+  console.log(email);
 
   try {
     //  Find user by email to get their ID
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) return res.status(401).json({ error: "User not found" });
-
+      console.log(email);
+  console.log(result);
     const saved = await prisma.summary.create({
       data: {
         email,
